@@ -25,7 +25,9 @@
     "@nestjs/platform-express": "^10.4.1",
     "axios": "^1.7.7",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "youtube-transcript": "^1.2.1",
+    "youtubei.js": "^10.4.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

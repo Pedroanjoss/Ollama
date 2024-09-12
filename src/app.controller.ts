@@ -13,4 +13,9 @@ export class AppController {
 
     stream.pipe(res); // Pipe the stream directly to the response
   }
+
+  @Post('transcribe')
+  async transcribeVideo(@Body('url') url: string): Promise<any> {
+    return this.appService.transcribe(url);
+  }
 }
