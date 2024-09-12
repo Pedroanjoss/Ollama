@@ -18,4 +18,10 @@ export class AppController {
   async transcribeVideo(@Body('url') url: string): Promise<any> {
     return this.appService.transcribe(url);
   }
+
+  @Post('resume')
+  async resumeVideo(@Body('url') url: string): Promise<any> {
+    return this.appService.resumeVideo(url);
+  }
+
 }

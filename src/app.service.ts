@@ -57,4 +57,29 @@ export class AppService {
       throw new Error('Não foi possível transcrever o vídeo. Verifique se o vídeo contém legendas.');
     }
   }
+
+  async resumeVideo(url: string): Promise<any> {
+    try {
+      const transcript = await this.transcribe(url);
+  
+      // Debug log to check the length and content of the transcript
+      console.log('Transcript length:', transcript.length);
+      console.log('Transcript preview:', transcript.substring(0, 500)); // Preview first 500 characters
+  
+      const summaryStream = await this.converse({ text: `Resuma esse video: ${transcript}` });
+  
+      // Buffer the summary stream to handle it properly
+      const summaryData = await new Promise<string>((resolve, reject) => {
+        const chunks: Buffer[] = [];
+        summaryStream.on('data', chunk => chunks.push(chunk));
+        summaryStream.on('end', () => resolve(Buffer.concat(chunks).toString()));
+        summaryStream.on('error', reject);
+      });
+  
+      return summaryData;
+    } catch (error) {
+      console.error('Erro ao tentar resumir o vídeo:', error.message);
+      throw new Error('Não foi possível resumir o vídeo. Verifique se o vídeo contém legendas.');
+    }
+  }
 }
