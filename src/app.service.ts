@@ -82,4 +82,41 @@ export class AppService {
       throw new Error('Não foi possível resumir o vídeo. Verifique se o vídeo contém legendas.');
     }
   }
+
+  async image(image: string): Promise<Readable> {
+    try {
+      const base64Data = image.replace(/^data:image\/jpeg;base64,/, '');
+      const response = await axios.post(
+        `${this.apiUrl}/api/generate`,
+        {
+          model: 'llava',
+          prompt: 'Explique o que há nessa imagem',
+          stream: true,
+          images: [base64Data]
+        },
+        {
+          responseType: 'stream',
+          headers: {
+            'Content-Type': 'application/json', // Certifique-se de que o Content-Type está correto
+            
+          }
+        }
+      );
+  
+
+     
+  
+      // Certifique-se de que response.data é um stream
+      if (response.data && typeof response.data.pipe === 'function') {
+        return response.data; // Retorna o stream
+      } else {
+        throw new Error('A resposta não é um stream');
+      }
+    } catch (error) {
+      console.log(image)
+      throw new Error(`Erro ao conversar com Ollama: ${error.message}`);
+      
+    }
+  }
+  
 }
